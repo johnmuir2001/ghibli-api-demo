@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-// import { Wrapper, NavItem } from "../Nav.styles";
 
 const Home = () => {
   const [filmData, setFilmData] = useState([]);
@@ -32,12 +31,6 @@ const Home = () => {
 
   return (
     <div id="filmWrapper">
-      {/* <Wrapper>
-        <NavItem>Item 1</NavItem>
-        <NavItem>Item 2</NavItem>
-        <NavItem>Item 3</NavItem>
-      </Wrapper> */}
-
       <FilmSection>
         {filmData.map((individualFilm, index) => {
           return (
@@ -47,10 +40,6 @@ const Home = () => {
           );
         })}
       </FilmSection>
-
-      <Button bgCol="green">Add</Button>
-      <Button bgCol="yellow">Edit</Button>
-      <Button bgCol="red">Delete</Button>
     </div>
   );
 };
@@ -66,13 +55,4 @@ const FilmSection = styled.main`
   img {
     width: 200px;
   }
-`;
-
-const Button = styled.button`
-  padding: 20px 40px;
-  margin: 10px;
-  border-radius: 5px;
-  border: none;
-  background-color: ${(props) => props.bgCol};
-  cursor: pointer;
 `;
