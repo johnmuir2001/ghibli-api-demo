@@ -15,7 +15,7 @@ const Movie = () => {
     };
 
     fetchData();
-  }, []);
+  }, [movieId]);
 
   return (
     <>
