@@ -30,17 +30,17 @@ const Home = () => {
   }
 
   return (
-    <div id="filmWrapper">
-      <FilmSection>
-        {filmData.map((individualFilm, index) => {
-          return (
-            <Link to={`/film/${individualFilm.id}`} key={index}>
-              <img src={individualFilm.image} alt="Movie Poster" />
-            </Link>
-          );
-        })}
-      </FilmSection>
-    </div>
+    <FilmSection>
+      {filmData.map((individualFilm, index) => {
+        return (
+          <PosterLink
+            to={`/film/${individualFilm.id}`}
+            bgimg={individualFilm.image}
+            key={index}
+          ></PosterLink>
+        );
+      })}
+    </FilmSection>
   );
 };
 
@@ -51,8 +51,20 @@ const FilmSection = styled.main`
   justify-content: center;
   flex-wrap: wrap;
   width: 100vw;
+  padding: 30px;
+  box-sizing: border-box;
+`;
 
-  img {
-    width: 200px;
+const PosterLink = styled(Link)`
+  width: 250px;
+  height: 375px;
+  margin: 5px;
+  background-image: url(${(props) => props.bgimg});
+  background-size: 100%;
+  background-position: center;
+  transition: all 0.3s;
+
+  &:hover {
+    background-size: 110%;
   }
 `;
