@@ -1,50 +1,68 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const Home = () => {
-  const [filmData, setFilmData] = useState([]);
-  const [errMsg, setErrMsg] = useState("");
+const Home = ({ filmData, setFilmData, directors, filter, setFilter }) => {
+  const sort = (e) => {
+    let type = e.target.value.split("-");
+    setFilmData([...filmData].sort((a, b) => (type[1] === "NORM") ? a[type[0]] - b[type[0]] : b[type[0]] - a[type[0]]));
+  };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const ghibliAPI = await fetch("https://ghibliapi.vercel.app/films");
-
-        if (ghibliAPI.ok === false) {
-          throw new Error("Something went wrong");
-        }
-
-        const data = await ghibliAPI.json();
-        setFilmData(data);
-      } catch (err) {
-        setErrMsg(err.message);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (errMsg !== "") {
-    return <h1>{errMsg}</h1>;
+  const handleFilter = (e) => {
+    setFilter(e.target.value);
   }
 
   return (
-    <FilmSection>
-      {filmData.map((individualFilm, index) => {
-        return (
-          <PosterLink
-            to={`/film/${individualFilm.id}`}
-            bgimg={individualFilm.image}
-            key={index}
-          ></PosterLink>
-        );
-      })}
-    </FilmSection>
+    <>
+      <SortFilter>
+        <Dropdown name="films" onChange={sort}>
+          <option value="release_date-NORM">Age (oldest - newest)</option>
+          <option value="release_date-FLIP">Age (newest - oldest)</option>
+          <option value="rt_score-NORM">Rating (worst - best)</option>
+          <option value="rt_score-FLIP">Rating (best - worst)</option>
+          <option value="running_time-NORM">Runtime (shortest - longest)</option>
+          <option value="running_time-FLIP">Runtime (longest - shortest)</option>
+        </Dropdown>
+
+        <Dropdown name="directors" onChange={handleFilter} value={filter}>
+          <option value="">Any Director</option>
+          {directors.map((singleDirector, index) => {
+            return <option key={index} value={singleDirector}>{singleDirector}</option>
+          })}
+        </Dropdown>
+      </SortFilter>
+
+      <FilmSection>
+        {filmData.map((individualFilm, index) => {
+          if(individualFilm.director === filter || filter === ""){
+            return (
+              <PosterLink
+                to={`/film/${individualFilm.id}`}
+                bgimg={individualFilm.image}
+                key={index}
+              ></PosterLink>
+            );
+          }
+          return null;
+        })}
+      </FilmSection>
+    </>
   );
 };
 
 export default Home;
+
+const SortFilter = styled.header`
+  display: flex;
+  justify-content: center;
+  margin: 35px 35px 0;
+`;
+
+const Dropdown = styled.select`
+  color: black;
+  margin: 0 20px;
+  padding: 8px 10px 6px;
+
+`;
 
 const FilmSection = styled.main`
   display: flex;

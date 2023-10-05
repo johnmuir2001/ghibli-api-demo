@@ -12,7 +12,6 @@ const Movie = () => {
         `https://ghibliapi.vercel.app/films/${movieId}`
       );
       const data = await singleFilm.json();
-      console.log(data);
       setFilmData(data);
     };
 
@@ -21,7 +20,7 @@ const Movie = () => {
 
   return (
     <InfoWrapper>
-      <TopSection bgimg={filmData.movie_banner}>
+      <TopSection $bgimg={filmData.movie_banner}>
         <div>
           <h1>{filmData.title}</h1>
           <h2>{filmData.original_title}</h2>
@@ -54,7 +53,7 @@ const InfoWrapper = styled.main`
 const TopSection = styled.section`
   width: 100%;
   aspect-ratio: 5/2;
-  background-image: url(${(props) => props.bgimg});
+  background-image: url(${(props) => props.$bgimg});
   background-size: cover;
   background-position: center;
   position: relative;
